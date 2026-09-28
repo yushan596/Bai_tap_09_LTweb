@@ -43,6 +43,10 @@ public class CustomUserDetails implements UserDetails {
         return List.of(new SimpleGrantedAuthority(role));
     }
 
+    public boolean isAdmin() {
+        return "ROLE_ADMIN".equals(role);
+    }
+
     @Override
     public boolean isAccountNonExpired() {
         return true;

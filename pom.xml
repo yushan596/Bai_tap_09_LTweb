@@ -46,6 +46,17 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
+        <!-- Gửi OTP qua email (Gmail SMTP) -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
+        <!-- Upload ảnh sản phẩm lên Cloudinary -->
+        <dependency>
+            <groupId>com.cloudinary</groupId>
+            <artifactId>cloudinary-http5</artifactId>
+            <version>2.0.0</version>
+        </dependency>
 
         <!-- Vẫn là artifact "springsecurity6": chưa có bản springsecurity7; dùng được với Spring Security 7 -->
         <dependency>

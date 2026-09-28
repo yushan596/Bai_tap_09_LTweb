@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<body>
+<!-- Dùng: <div th:replace="~{fragments/pagination :: pagination(${page}, '/users')}"></div>
+     Cần có biến size và keyword trong model. -->
+<div th:fragment="pagination(page, baseUrl)" class="pagination" th:if="${page.totalPages > 1}">
+    <a th:if="${page.hasPrevious()}"
+       th:href="@{${baseUrl}(page=${page.number - 1}, size=${size}, keyword=${keyword})}">&laquo;</a>
+
+    <a th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}"
+       th:classappend="${i == page.number} ? 'active'"
+       th:href="@{${baseUrl}(page=${i}, size=${size}, keyword=${keyword})}"
+       th:text="${i + 1}">1</a>
+
+    <a th:if="${page.hasNext()}"
+       th:href="@{${baseUrl}(page=${page.number + 1}, size=${size}, keyword=${keyword})}">&raquo;</a>
+</div>
+</body>
+</html>

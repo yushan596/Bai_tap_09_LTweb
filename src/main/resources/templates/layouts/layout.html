@@ -12,6 +12,12 @@
 
 <header th:replace="~{fragments/header :: header}"></header>
 
+<!-- Thông báo flash (redirect-after-post) -->
+<div class="container flash" th:if="${success != null or error != null}">
+    <div class="msg ok" th:if="${success != null}" th:text="${success}"></div>
+    <div class="msg error" th:if="${error != null}" th:text="${error}"></div>
+</div>
+
 <main class="container" layout:fragment="content"></main>
 
 <footer class="footer">Copyright &copy; UTEShop</footer>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="vi"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<head>
+    <title th:text="${mode == 'create' ? 'Thêm Product' : 'Sửa Product'}">Form Product</title>
+</head>
+<body>
+<main layout:fragment="content">
+    <h1 th:text="${mode == 'create' ? 'Thêm Product' : 'Sửa Product'}">Form Product</h1>
+
+    <form class="form-card" th:object="${productDTO}" method="post"
+          enctype="multipart/form-data" accept-charset="UTF-8"
+          th:action="${mode == 'create'} ? @{/products/create} : @{/products/edit/{id}(id=${productDTO.id})}">
+
+        <div class="msg error" th:if="${#fields.hasGlobalErrors()}">
+            <div th:each="e : ${#fields.globalErrors()}" th:text="${e}"></div>
+        </div>
+
+        <label for="name">Tên sản phẩm</label>
+        <input id="name" type="text" th:field="*{name}">
+        <small class="error-text" th:errors="*{name}"></small>
+
+        <label for="description">Mô tả</label>
+        <textarea id="description" th:field="*{description}" rows="5"></textarea>
+        <small class="error-text" th:errors="*{description}"></small>
+
+        <label for="price">Giá</label>
+        <input id="price" type="number" step="0.01" min="0" th:field="*{price}">
+        <small class="error-text" th:errors="*{price}"></small>
+
+        <label for="image">Ảnh (tải lên Cloudinary)</label>
+        <input id="image" type="file" name="image" accept="image/*">
+
+        <div th:if="${productDTO.imageUrl != null}">
+            <p class="muted">Ảnh hiện tại (chọn file mới để thay):</p>
+            <img th:src="${productDTO.imageUrl}" class="preview" alt="Ảnh hiện tại">
+        </div>
+
+        <div class="form-actions">
+            <button class="button" type="submit">Lưu</button>
+            <a class="button secondary" th:href="@{/products}">Hủy</a>
+        </div>
+    </form>
+</main>
+</body>
+</html>

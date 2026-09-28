@@ -10,6 +10,18 @@
 <main layout:fragment="content">
     <h1>Trang chủ UTEShop</h1>
     <p>Xin chào <strong th:text="${#authentication.principal.fullName}">User</strong></p>
+
+    <div class="cards">
+        <div class="card"><h3>Tổng số User</h3><strong th:text="${userCount}">0</strong></div>
+        <div class="card"><h3>Tổng số Product</h3><strong th:text="${productCount}">0</strong></div>
+        <div class="card"><h3>Product của bạn</h3><strong th:text="${myProductCount}">0</strong></div>
+    </div>
+
+    <div class="quick-links">
+        <a class="button" th:href="@{/products}">Quản lý Products</a>
+        <a class="button" th:href="@{/products/create}">+ Thêm Product</a>
+        <a class="button" th:if="${#authorization.expression('hasRole(''ADMIN'')')}" th:href="@{/users}">Quản lý Users</a>
+    </div>
 </main>
 </body>
 </html>

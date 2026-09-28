@@ -1,5 +1,8 @@
 package vn.iotstar.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -44,4 +47,9 @@ public class User {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id", nullable = false)
     private Role role;
+
+    /** 1 user - n product (chỉ đọc; khóa ngoại nằm ở bảng products) */
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @Builder.Default
+    private List<Product> products = new ArrayList<>();
 }

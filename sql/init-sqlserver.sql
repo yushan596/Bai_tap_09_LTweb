@@ -8,7 +8,7 @@ GO
 USE webst9;
 GO
 
-/* ---------- Bảng (khớp với entity Role / User) ---------- */
+/* ---------- Bảng (khớp với entity Role / User / Product / OtpToken) ---------- */
 IF OBJECT_ID(N'dbo.roles', N'U') IS NULL
 CREATE TABLE dbo.roles (
     id    BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
@@ -31,6 +31,36 @@ CREATE TABLE dbo.users (
     CONSTRAINT uk_users_email    UNIQUE (email),
     CONSTRAINT fk_users_role FOREIGN KEY (role_id) REFERENCES dbo.roles(id)
 );
+GO
+
+IF OBJECT_ID(N'dbo.products', N'U') IS NULL
+CREATE TABLE dbo.products (
+    id              BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    name            NVARCHAR(500)  NOT NULL,
+    description     NVARCHAR(2000) NULL,
+    price           DECIMAL(18,2)  NOT NULL,
+    image_url       VARCHAR(1000)  NULL,      -- secure_url Cloudinary
+    image_public_id VARCHAR(255)   NULL,      -- public_id Cloudinary (để xóa/thay ảnh)
+    user_id         BIGINT         NOT NULL,  -- 1 user - n product
+    created_at      DATETIME2(6)   NOT NULL DEFAULT SYSDATETIME(),
+    CONSTRAINT fk_products_user FOREIGN KEY (user_id) REFERENCES dbo.users(id)
+);
+GO
+
+IF OBJECT_ID(N'dbo.otp_tokens', N'U') IS NULL
+BEGIN
+    CREATE TABLE dbo.otp_tokens (
+        id         BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+        email      VARCHAR(150) NOT NULL,
+        otp_hash   VARCHAR(100) NOT NULL,      -- BCrypt hash của OTP
+        type       VARCHAR(30)  NOT NULL,      -- REGISTER | RESET_PASSWORD
+        expires_at DATETIME2(6) NOT NULL,
+        attempts   INT          NOT NULL DEFAULT 0,
+        used       BIT          NOT NULL DEFAULT 0,
+        created_at DATETIME2(6) NOT NULL
+    );
+    CREATE INDEX idx_otp_email_type ON dbo.otp_tokens(email, type);
+END
 GO
 
 /* ---------- Dữ liệu mẫu ---------- */

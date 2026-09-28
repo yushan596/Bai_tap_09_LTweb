@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Đăng ký</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body class="auth-page">
+<div class="auth-card">
+    <h2>Đăng ký</h2>
+
+    <form th:action="@{/register}" th:object="${registerDTO}" method="post">
+        <div class="msg error" th:if="${#fields.hasGlobalErrors()}">
+            <div th:each="e : ${#fields.globalErrors()}" th:text="${e}"></div>
+        </div>
+
+        <label for="username">Username</label>
+        <input id="username" th:field="*{username}" autofocus>
+        <small class="error-text" th:errors="*{username}"></small>
+
+        <label for="email">Email</label>
+        <input id="email" type="email" th:field="*{email}">
+        <small class="error-text" th:errors="*{email}"></small>
+
+        <label for="fullName">Họ tên</label>
+        <input id="fullName" th:field="*{fullName}">
+        <small class="error-text" th:errors="*{fullName}"></small>
+
+        <label for="password">Password</label>
+        <input id="password" type="password" th:field="*{password}">
+        <small class="error-text" th:errors="*{password}"></small>
+
+        <label for="confirmPassword">Confirm Password</label>
+        <input id="confirmPassword" type="password" th:field="*{confirmPassword}">
+        <small class="error-text" th:errors="*{confirmPassword}"></small>
+
+        <button type="submit">Đăng ký &amp; nhận OTP</button>
+    </form>
+
+    <p class="auth-links"><a th:href="@{/login}">Đã có tài khoản?</a></p>
+</div>
+</body>
+</html>

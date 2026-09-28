@@ -48,7 +48,7 @@ class LoginFlowTest {
     void anonymousIsRedirectedToLogin() throws Exception {
         mvc.perform(get("/"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrlPattern("**/login"));
+                .andExpect(redirectedUrl("/login"));
     }
 
     @Test

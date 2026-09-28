@@ -45,8 +45,12 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/login", "/error", "/css/**", "/js/**",
-                                "/images/**", "/uploads/**").permitAll()
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                                "/images/**", "/uploads/**",
+                                // đăng ký + OTP + quên mật khẩu: chưa đăng nhập vẫn truy cập được
+                                "/register", "/verify-otp", "/resend-register-otp",
+                                "/forgot-password", "/reset-password").permitAll()
+                        .requestMatchers("/admin/**", "/users/**").hasRole("ADMIN")
+                        // /products/** : cần đăng nhập (anyRequest bên dưới); quyền sửa/xóa kiểm tra ở controller
                         .anyRequest().authenticated())
                 .formLogin(form -> form
                         .loginPage("/login")

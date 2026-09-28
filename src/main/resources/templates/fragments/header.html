@@ -5,6 +5,13 @@
     <nav>
         <a class="brand" th:href="@{/}">UTEShop</a>
 
+        <div class="links" th:if="${#authorization.expression('isAuthenticated()')}">
+            <a th:href="@{/}">Dashboard</a>
+            <a th:href="@{/products}">Products</a>
+            <a th:if="${#authorization.expression('hasRole(''ADMIN'')')}" th:href="@{/users}">Users</a>
+            <a th:if="${#authorization.expression('hasRole(''ADMIN'')')}" th:href="@{/admin/dashboard}">Admin</a>
+        </div>
+
         <div class="account" th:if="${#authorization.expression('isAuthenticated()')}">
             <!-- Avatar -->
             <img class="avatar"

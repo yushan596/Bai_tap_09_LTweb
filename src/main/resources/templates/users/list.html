@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="vi"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<head>
+    <title>Quản lý Users</title>
+</head>
+<body>
+<main layout:fragment="content">
+    <h1>Quản lý Users</h1>
+
+    <div class="toolbar">
+        <form th:action="@{/users}" method="get">
+            <input type="text" name="keyword" th:value="${keyword}" placeholder="Username, email, họ tên...">
+            <input type="hidden" name="size" th:value="${size}">
+            <button class="button" type="submit">Tìm kiếm</button>
+        </form>
+        <a class="button" th:href="@{/users/create}">+ Thêm User</a>
+    </div>
+
+    <p class="muted">Tổng: <strong th:text="${users.totalElements}">0</strong> user</p>
+
+    <div class="table-wrap">
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th><th>Username</th><th>Email</th><th>Họ tên</th>
+                <th>Role</th><th>Trạng thái</th><th>Số Product</th><th>Thao tác</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="u : ${users.content}">
+                <td th:text="${u.id}"></td>
+                <td th:text="${u.username}"></td>
+                <td th:text="${u.email}"></td>
+                <td th:text="${u.fullName}"></td>
+                <td th:text="${u.roleName}"></td>
+                <td th:text="${u.enabled ? 'ACTIVE' : 'INACTIVE'}"></td>
+                <td th:text="${u.productCount}"></td>
+                <td>
+                  <div class="actions">
+                    <a th:href="@{/users/edit/{id}(id=${u.id})}">Sửa</a>
+                    <form th:action="@{/users/delete/{id}(id=${u.id})}" method="post"
+                          onsubmit="return confirm('Xóa user này?')">
+                        <button class="danger-link" type="submit">Xóa</button>
+                    </form>
+                  </div>
+                </td>
+            </tr>
+            <tr th:if="${users.empty}">
+                <td colspan="8">Không có dữ liệu.</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div th:replace="~{fragments/pagination :: pagination(${users}, '/users')}"></div>
+</main>
+</body>
+</html>

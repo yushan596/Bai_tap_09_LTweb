@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="vi"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
+<head>
+    <title>Quản lý Products</title>
+</head>
+<body>
+<main layout:fragment="content">
+    <h1>Quản lý Products</h1>
+
+    <div class="toolbar">
+        <form th:action="@{/products}" method="get">
+            <input type="text" name="keyword" th:value="${keyword}" placeholder="Tên sản phẩm, mô tả...">
+            <input type="hidden" name="size" th:value="${size}">
+            <button class="button" type="submit">Tìm kiếm</button>
+        </form>
+        <a class="button" th:href="@{/products/create}">+ Thêm Product</a>
+    </div>
+
+    <p class="muted">Tổng: <strong th:text="${products.totalElements}">0</strong> sản phẩm</p>
+
+    <div class="table-wrap">
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th><th>Ảnh</th><th>Tên</th><th>Giá</th><th>Chủ sở hữu</th><th>Thao tác</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="p : ${products.content}">
+                <td th:text="${p.id}"></td>
+                <td>
+                    <img th:if="${p.imageUrl != null}" th:src="${p.imageUrl}" class="thumb" alt="Ảnh sản phẩm">
+                    <span th:unless="${p.imageUrl != null}" class="muted">Không có ảnh</span>
+                </td>
+                <td th:text="${p.name}"></td>
+                <td th:text="${#numbers.formatDecimal(p.price, 0, 'COMMA', 2, 'POINT')}"></td>
+                <td th:text="${p.username}"></td>
+                <td th:if="${#authorization.expression('hasRole(''ADMIN'')') or #authentication.principal.id == p.userId}">
+                  <div class="actions">
+                    <a th:href="@{/products/edit/{id}(id=${p.id})}">Sửa</a>
+                    <form th:action="@{/products/delete/{id}(id=${p.id})}" method="post"
+                          onsubmit="return confirm('Xóa sản phẩm này?')">
+                        <button class="danger-link" type="submit">Xóa</button>
+                    </form>
+                  </div>
+                </td>
+                <td th:unless="${#authorization.expression('hasRole(''ADMIN'')') or #authentication.principal.id == p.userId}"
+                    class="muted">—</td>
+            </tr>
+            <tr th:if="${products.empty}">
+                <td colspan="6">Không có dữ liệu.</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div th:replace="~{fragments/pagination :: pagination(${products}, '/products')}"></div>
+</main>
+</body>
+</html>

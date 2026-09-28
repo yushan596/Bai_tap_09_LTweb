@@ -11,8 +11,9 @@
 <div class="auth-card">
     <h2>Đăng nhập</h2>
 
-    <div class="msg error" th:if="${param.error}">Username/email hoặc password không đúng</div>
+    <div class="msg error" th:if="${param.error}">Username/email hoặc password không đúng, hoặc tài khoản chưa xác nhận OTP</div>
     <div class="msg ok" th:if="${param.logout}">Bạn đã đăng xuất</div>
+    <div class="msg ok" th:if="${success != null}" th:text="${success}"></div>
 
     <!-- th:action tự chèn CSRF token. Tên field mặc định của Spring Security: username / password -->
     <form th:action="@{/login}" method="post">
@@ -24,6 +25,9 @@
 
         <button type="submit">Đăng nhập</button>
     </form>
+
+    <p class="auth-links"><a th:href="@{/register}">Tạo tài khoản</a></p>
+    <p class="auth-links"><a th:href="@{/forgot-password}">Quên mật khẩu?</a></p>
 </div>
 
 </body>

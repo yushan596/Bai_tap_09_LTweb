@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Có lỗi xảy ra</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body class="auth-page">
+<div class="auth-card">
+    <h2>Có lỗi xảy ra</h2>
+    <p th:text="${#strings.isEmpty(message) ? 'Đã xảy ra lỗi. Vui lòng thử lại.' : message}">Error</p>
+    <p class="auth-links"><a th:href="@{/}">Về trang chủ</a></p>
+</div>
+</body>
+</html>
